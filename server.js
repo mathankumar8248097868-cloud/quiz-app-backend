@@ -3,7 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const path = require("path");
 const cors = require("cors");
 
 const authRoutes = require("./routes/auth");
@@ -12,7 +11,7 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
-// ⭐ CORS middleware
+// CORS
 app.use(cors({
   origin: "*"
 }));
@@ -29,39 +28,19 @@ app.use(
   })
 );
 
-// ✅ Frontend folder path
-const frontendPath = path.join(__dirname, "../frontend");
-
-app.use(express.static(frontendPath));
-
-/* ================= API ROUTES ================= */
+// API routes
 app.use("/api", authRoutes);
 app.use("/api", quizRoutes);
 app.use("/api", adminRoutes);
 
-/* ================= PAGES ================= */
-
-// ⭐ CHANGE HERE (register.html → index.html)
+// Test route
 app.get("/", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
+  res.send("Backend Running ✅");
 });
 
-app.get("/quiz", (req, res) => {
-  res.sendFile(path.join(frontendPath, "quiz.html"));
-});
-
-app.get("/admin", (req, res) => {
-  res.sendFile(path.join(frontendPath, "admin.html"));
-});
-
-app.get("/result", (req, res) => {
-  res.sendFile(path.join(frontendPath, "result.html"));
-});
-
-/* ================= SERVER ================= */
-
+// Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log("Server running on port", PORT);
 });
