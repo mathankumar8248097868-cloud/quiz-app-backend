@@ -11,12 +11,8 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
-// CORS
-app.use(cors({
-  origin: "*"
-}));
+app.use(cors({ origin: "*" }));
 
-// Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -28,17 +24,14 @@ app.use(
   })
 );
 
-// API routes
 app.use("/api", authRoutes);
 app.use("/api", quizRoutes);
 app.use("/api", adminRoutes);
 
-// Test route
 app.get("/", (req, res) => {
   res.send("Backend Running ✅");
 });
 
-// Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
