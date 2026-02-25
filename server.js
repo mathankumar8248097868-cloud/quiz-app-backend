@@ -4,7 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
-const cors = require("cors");   // ⭐ ADD THIS LINE
+const cors = require("cors");
 
 const authRoutes = require("./routes/auth");
 const quizRoutes = require("./routes/quiz");
@@ -29,19 +29,21 @@ app.use(
   })
 );
 
-// ✅ Correct frontend path
+// ✅ Frontend folder path
 const frontendPath = path.join(__dirname, "../frontend");
 
 app.use(express.static(frontendPath));
 
-// API Routes
+/* ================= API ROUTES ================= */
 app.use("/api", authRoutes);
 app.use("/api", quizRoutes);
 app.use("/api", adminRoutes);
 
-// Pages
+/* ================= PAGES ================= */
+
+// ⭐ CHANGE HERE (register.html → index.html)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(frontendPath, "register.html"));
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 app.get("/quiz", (req, res) => {
@@ -56,9 +58,10 @@ app.get("/result", (req, res) => {
   res.sendFile(path.join(frontendPath, "result.html"));
 });
 
-// Start server
+/* ================= SERVER ================= */
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
