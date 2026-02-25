@@ -4,6 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require("cors");   // ⭐ ADD THIS LINE
 
 const authRoutes = require("./routes/auth");
 const quizRoutes = require("./routes/quiz");
@@ -11,6 +12,7 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
+// ⭐ CORS middleware
 app.use(cors({
   origin: "*"
 }));
