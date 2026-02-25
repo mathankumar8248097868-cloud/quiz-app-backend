@@ -11,6 +11,10 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
+app.use(cors({
+  origin: "*"
+}));
+
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
