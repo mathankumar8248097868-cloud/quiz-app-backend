@@ -4,12 +4,17 @@ const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const db = require("./config/db");   // ✅ import database
 
 const authRoutes = require("./routes/auth");
 const quizRoutes = require("./routes/quiz");
 const adminRoutes = require("./routes/admin");
 
 const app = express();
+
+/* ===============================
+   MIDDLEWARE
+================================= */
 
 app.use(cors({ origin: "*" }));
 
@@ -24,6 +29,10 @@ app.use(
   })
 );
 
+/* ===============================
+   ROUTES
+================================= */
+
 app.use("/api", authRoutes);
 app.use("/api", quizRoutes);
 app.use("/api", adminRoutes);
@@ -32,8 +41,27 @@ app.get("/", (req, res) => {
   res.send("Backend Running ✅");
 });
 
+/* ===============================
+   RAILWAY MYSQL KEEP ALIVE
+   Prevent database sleep
+================================= */
+
+setInterval(() => {
+  db.query("SELECT 1", (err) => {
+    if (err) {
+      console.log("❌ Keep Alive Failed:", err.message);
+    } else {
+      console.log("✅ DB Keep Alive Ping");
+    }
+  });
+}, 300000); // 5 minutes (300000 ms)
+
+/* ===============================
+   START SERVER
+================================= */
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
+  console.log("🚀 Server running on port", PORT);
 });
